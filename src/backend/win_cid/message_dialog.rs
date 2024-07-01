@@ -9,8 +9,8 @@ use windows_sys::Win32::{
 
 #[cfg(not(feature = "common-controls-v6"))]
 use windows_sys::Win32::UI::WindowsAndMessaging::{
-    MessageBoxW, MB_ICONERROR, MB_ICONINFORMATION, MB_ICONWARNING, MB_OK, MB_OKCANCEL, MB_YESNO,
-    MB_YESNOCANCEL, MESSAGEBOX_STYLE,
+    MessageBoxW, MB_ICONERROR, MB_ICONINFORMATION, MB_ICONWARNING, MB_OK, MB_OKCANCEL,
+    MB_SYSTEMMODAL, MB_YESNO, MB_YESNOCANCEL, MESSAGEBOX_STYLE,
 };
 
 use raw_window_handle::RawWindowHandle;
@@ -62,7 +62,7 @@ impl WinMessageDialog {
             text,
             caption,
             #[cfg(not(feature = "common-controls-v6"))]
-            flags: level | buttons,
+            flags: level | buttons | MB_SYSTEMMODAL,
             #[cfg(feature = "common-controls-v6")]
             opt,
         }
@@ -237,6 +237,7 @@ impl MessageDialogImpl for MessageDialog {
 }
 
 use crate::backend::AsyncMessageDialogImpl;
+
 use crate::backend::DialogFutureType;
 
 impl AsyncMessageDialogImpl for MessageDialog {
